@@ -16,6 +16,12 @@ namespace HK.Pierrot
         [SerializeField]
         private GameObject floor = null;
 
+        [SerializeField]
+        private int[] winTable = null;
+
+        [SerializeField]
+        private CreditController creditController = null;
+
         private bool[] courseFlags;
 
         void Awake()
@@ -53,12 +59,40 @@ namespace HK.Pierrot
             else
             {
                 this.courseFlags[courseId] = true;
+                var continuity = 0;
+                var win = 0;
+                foreach(var f in this.courseFlags)
+                {
+                    if(f)
+                    {
+                        continuity++;
+                    }
+                    else
+                    {
+                        win += this.GetWin(continuity);
+                        continuity = 0;
+                    }
+                }
+
+                win += this.GetWin(continuity);
+                this.creditController.SetWin(win);
             }
         }
 
         private void OnEnteredLucky()
         {
 
+        }
+
+        private int GetWin(int continuity)
+        {
+            if(continuity < 2)
+            {
+                return 0;
+            }
+
+            var index = continuity - 2;
+            return this.winTable[index];
         }
 
         private void GameOver()
@@ -69,6 +103,7 @@ namespace HK.Pierrot
             }
 
             this.floor.SetActive(false);
+            this.creditController.SetWin(0);
         }
     }
 }

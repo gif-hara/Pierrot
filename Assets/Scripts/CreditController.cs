@@ -29,5 +29,10 @@ namespace HK.Pierrot
                 })
                 .AddTo(this);
         }
+
+        public void SetWin(int value)
+        {
+            this.win.Value = value;
+        }
     }
 }
