@@ -1281,7 +1281,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   courseNumber: 7
   floor: {fileID: 6315168918502552898}
-  winTable: 0400000006000000140000003c000000f0000000
+  winTable: 0400000006000000140000003c00000078000000f0000000
   creditController: {fileID: 0}
 --- !u!1 &3876039572706147688
 GameObject:

@@ -1,5 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 namespace HK.Pierrot
 {
@@ -14,17 +18,40 @@ namespace HK.Pierrot
         [SerializeField]
         private CreditController creditController = null;
 
-        void Update()
-        {
-            if(Input.GetKeyDown(KeyCode.Space))
-            {
-                this.spawnCoin.Fire();
-            }
+        [SerializeField]
+        private Button fireButton = null;
 
-            if(Input.GetKeyDown(KeyCode.C))
+        [SerializeField]
+        private Button collectButton = null;
+
+        void Awake()
+        {
+            Observable.Merge(
+                this.fireButton.OnClickAsObservable(),
+                this.GetKeyDown(KeyCode.Space)
+            )
+                .SubscribeWithState(this, (_, _this) =>
+                {
+                    _this.spawnCoin.Fire();
+                })
+                .AddTo(this);
+
+            Observable.Merge(
+                this.collectButton.OnClickAsObservable(),
+                this.GetKeyDown(KeyCode.C)
+            )
+            .SubscribeWithState(this, (_, _this) =>
             {
-                this.creditController.Collect();
-            }
+                _this.creditController.Collect();
+            })
+            .AddTo(this);
+        }
+
+        private IObservable<Unit> GetKeyDown(KeyCode keyCode)
+        {
+            return this.UpdateAsObservable()
+                .Where(_ => Input.GetKeyDown(keyCode))
+                .AsUnitObservable();
         }
     }
 }
