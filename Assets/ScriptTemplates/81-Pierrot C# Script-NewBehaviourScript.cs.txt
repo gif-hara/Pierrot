@@ -1,0 +1,12 @@
+using UnityEngine;
+using UnityEngine.Assertions;
+
+namespace HK.Pierrot
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class #SCRIPTNAME# : MonoBehaviour
+    {
+    }
+}
