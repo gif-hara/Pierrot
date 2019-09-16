@@ -1,4 +1,5 @@
 ﻿using System;
+using HK.Framework.EventSystems;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -45,6 +46,22 @@ namespace HK.Pierrot
                 _this.creditController.Collect();
             })
             .AddTo(this);
+
+            this.collectButton.gameObject.SetActive(false);
+
+            this.creditController.Win
+                .SubscribeWithState(this, (x, _this) =>
+                {
+                    _this.collectButton.gameObject.SetActive(x > 0);
+                })
+                .AddTo(this);
+
+            Broker.Global.Receive<FiredCoin>()
+                .SubscribeWithState(this, (_, _this) =>
+                {
+                    _this.collectButton.gameObject.SetActive(false);
+                })
+                .AddTo(this);
         }
 
         private IObservable<Unit> GetKeyDown(KeyCode keyCode)
