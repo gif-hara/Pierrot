@@ -52,6 +52,8 @@ namespace HK.Pierrot
             this.paid.Value = this.win.Value;
             this.credit.Value += this.win.Value;
             this.win.Value = 0;
+
+            Broker.Global.Publish(CollectedCoin.Get());
         }
     }
 }

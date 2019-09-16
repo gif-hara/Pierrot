@@ -48,6 +48,14 @@ namespace HK.Pierrot
                     _this.floor.SetActive(true);
                 })
                 .AddTo(this);
+
+            Broker.Global.Receive<CollectedCoin>()
+                .SubscribeWithState(this, (_, _this) =>
+                {
+                    _this.floor.SetActive(false);
+                    _this.ClearFlags();
+                })
+                .AddTo(this);
         }
 
         private void OnEnteredCourse(int courseId)
@@ -97,13 +105,17 @@ namespace HK.Pierrot
 
         private void GameOver()
         {
+            this.ClearFlags();
+            this.floor.SetActive(false);
+            this.creditController.SetWin(0);
+        }
+
+        private void ClearFlags()
+        {
             for (var i = 0; i < this.courseFlags.Length; i++)
             {
                 this.courseFlags[i] = false;
             }
-
-            this.floor.SetActive(false);
-            this.creditController.SetWin(0);
         }
     }
 }
