@@ -49,15 +49,11 @@ namespace HK.Pierrot
 
         void Update()
         {
-            if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
-            {
-                this.Fire();
-            }
             var angle = (Mathf.Sin(Time.time * this.speed)) * this.angleLimit;
             this.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, this.initialAngle + angle);
         }
 
-        private void Fire()
+        public void Fire()
         {
             if(!this.canFire)
             {
