@@ -21,11 +21,18 @@ namespace HK.Pierrot
         void Awake()
         {
             this.courseFlags = new bool[this.courseNumber];
-            
+
             Broker.Global.Receive<EnteredCourse>()
                 .SubscribeWithState(this, (x, _this) =>
                 {
-                    _this.Enter(x.CourseId);
+                    _this.OnEnteredCourse(x.CourseId);
+                })
+                .AddTo(this);
+
+            Broker.Global.Receive<EnteredLucky>()
+                .SubscribeWithState(this, (_, _this) =>
+                {
+                    _this.OnEnteredLucky();
                 })
                 .AddTo(this);
 
@@ -37,7 +44,7 @@ namespace HK.Pierrot
                 .AddTo(this);
         }
 
-        private void Enter(int courseId)
+        private void OnEnteredCourse(int courseId)
         {
             if(this.courseFlags[courseId])
             {
@@ -47,6 +54,11 @@ namespace HK.Pierrot
             {
                 this.courseFlags[courseId] = true;
             }
+        }
+
+        private void OnEnteredLucky()
+        {
+
         }
 
         private void GameOver()

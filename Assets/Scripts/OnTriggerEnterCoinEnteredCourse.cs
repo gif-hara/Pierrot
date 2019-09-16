@@ -10,8 +10,8 @@ namespace HK.Pierrot
     public sealed class OnTriggerEnterCoinEnteredCourse : MonoBehaviour, IOnTriggerEnterCoin
     {
         [SerializeField]
-        private int id;
-        
+        private int id = 0;
+
         void IOnTriggerEnterCoin.Do(Coin coin)
         {
             Broker.Global.Publish(EnteredCourse.Get(this.id));

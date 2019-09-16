@@ -31,7 +31,10 @@ namespace HK.Pierrot
 
         void Awake()
         {
-            Broker.Global.Receive<EnteredCourse>()
+            Observable.Merge(
+                Broker.Global.Receive<EnteredCourse>().AsUnitObservable(),
+                Broker.Global.Receive<EnteredLucky>().AsUnitObservable()
+            )
                 .SubscribeWithState(this, (_, _this) =>
                 {
                     _this.canFire = true;
