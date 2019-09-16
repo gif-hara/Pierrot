@@ -9,10 +9,10 @@ namespace HK.Pierrot
     public sealed class SpawnCoin : MonoBehaviour
     {
         [SerializeField]
-        private Coin coinPrefab;
+        private Coin coinPrefab = null;
 
         [SerializeField]
-        private Transform coinParent;
+        private Transform coinParent = null;
 
         [SerializeField]
         private float angleLimit = 45.0f;
