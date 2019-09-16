@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using HK.Framework.EventSystems;
+using UniRx;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace HK.Pierrot
@@ -23,7 +25,19 @@ namespace HK.Pierrot
         [SerializeField]
         private float power = 1.0f;
 
+        private bool canFire = true;
+
         private float initialAngle;
+
+        void Awake()
+        {
+            Broker.Global.Receive<EnteredCourse>()
+                .SubscribeWithState(this, (_, _this) =>
+                {
+                    _this.canFire = true;
+                })
+                .AddTo(this);
+        }
 
         void Start()
         {
@@ -42,11 +56,19 @@ namespace HK.Pierrot
 
         private void Fire()
         {
+            if(!this.canFire)
+            {
+                return;
+            }
+
             var coin = this.coinPrefab.Rent();
             coin.transform.SetParent(this.coinParent);
             coin.transform.position = this.transform.position;
             var vector = this.transform.up;
             coin.Rigidbody2D.AddForce(vector * this.power);
+            this.canFire = false;
+
+            Broker.Global.Publish(FiredCoin.Get());
         }
     }
 }

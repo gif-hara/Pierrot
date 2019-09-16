@@ -21,10 +21,18 @@ namespace HK.Pierrot
         void Awake()
         {
             this.courseFlags = new bool[this.courseNumber];
+            
             Broker.Global.Receive<EnteredCourse>()
                 .SubscribeWithState(this, (x, _this) =>
                 {
                     _this.Enter(x.CourseId);
+                })
+                .AddTo(this);
+
+            Broker.Global.Receive<FiredCoin>()
+                .SubscribeWithState(this, (_, _this) =>
+                {
+                    _this.floor.SetActive(true);
                 })
                 .AddTo(this);
         }
