@@ -26,6 +26,11 @@ namespace HK.Pierrot
             return clone;
         }
 
+        public void ReturnToPool()
+        {
+            this.pool.Return(this);
+        }
+
         void OnTriggerEnter2D(Collider2D other)
         {
             var elements = other.GetComponentsInChildren<IOnTriggerEnterCoin>();
