@@ -49,7 +49,10 @@ namespace HK.Pierrot
 
             this.collectButton.gameObject.SetActive(false);
 
-            this.creditController.Win
+            Observable.Merge(
+                this.creditController.Win,
+                Broker.Global.Receive<EnteredLucky>().Select(_ => this.creditController.Win.Value)
+            )
                 .SubscribeWithState(this, (x, _this) =>
                 {
                     _this.collectButton.gameObject.SetActive(x > 0);

@@ -39,7 +39,7 @@ namespace HK.Pierrot
 
         public void SetWin(int value)
         {
-            this.win.Value = value;
+            this.win.SetValueAndForceNotify(value);
         }
 
         public void Collect()
