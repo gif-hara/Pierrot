@@ -25,5 +25,14 @@ namespace HK.Pierrot
 
             return clone;
         }
+
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            var elements = other.GetComponentsInChildren<IOnTriggerEnterCoin>();
+            foreach(var e in elements)
+            {
+                e.Do(this);
+            }
+        }
     }
 }
