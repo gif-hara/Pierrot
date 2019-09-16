@@ -46,7 +46,6 @@ namespace HK.Pierrot
             coin.transform.SetParent(this.coinParent);
             coin.transform.position = this.transform.position;
             var vector = this.transform.up;
-            Debug.Log(vector);
             coin.Rigidbody2D.AddForce(vector * this.power);
         }
     }
